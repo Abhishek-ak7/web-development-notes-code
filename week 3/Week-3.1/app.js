@@ -1,100 +1,87 @@
+//middleware and global catches
+
+
+
+//1>authentication 
 const express = require('express');
 const bodyparser=require('body-parser');
 const app = express();
 const port =3000;
 
 app.use(bodyparser.json());
-app.use((req,res,next)=>{
-    
-    console.log("auth check middleware",req.body.name)
-    next(   )
-})
 
-app.use((req,res,next)=>{
-    console.log("health check middleware")
-    // console.log(req)
-    next()
-})
-// app.use(bodyparser.urlencoded({extended:true}));
-// app.use(express.text({ type: "*/*" }));
-
-app.get('/check-health',(req,res)=>{
+function userMiddleware(req,res,next){
     const username = req.headers.username;
     const password = req.headers.password;
     if(username!="abhishek" || password!="pass"){
         res.status(401).json({
             msg : "user not found"
         })
-        return;
+    }else{
+        next();
     }
-        res.status(200).json({
-            msg: "your health is fine"
-        })
+      
+};
+                        //first middleware .. ham multiple middleware yese hi authentication ke liye ya or kisi kam ke liye lga skte h
+app.get("/check-health",userMiddleware,(req,res)=>{
+    res.send("health is good");
 });
-app.post('/check-health',(req,res)=>{
-    //lenth of kedneys
-    console.log(req.body);
-    res.status(200).json({msg:" recived"});
-})
-app.use(()=>{
-    console.log("final error check middleware")
+
+//2>input validation
+
+app.post("/check-health",(req,res)=>{
+    const kedneys=req.body.kedneys;
+    const TotalKedneys=kedneys.length;
+    res.status(200).json({
+        msg: TotalKedneys
+    })
 })
 
-
+//global catches
+app.use((err,req,res,next)=>{
+    res.status(401).json({
+        msg: "somthing going to roungh"
+    })
+})
 app.listen(port,()=>{
     console.log("express is working");
 });
 
+                                        //OR
 
-// const express = require("express");
+
+
+// const express = require('express');
+// const bodyparser=require('body-parser');
 // const app = express();
-// const port = 3000;
+// const port =3000;
 
-// // RAW BODY AS TEXT
-// app.use(express.text({ type: "*/*" }));
+// app.use(bodyparser.json());
 
-// app.post("/check-health", (req, res) => {
-//   console.log("Headers:", req.headers);
-//   console.log("Raw Body:", req.body);
-
-//   res.status(200).send("received");
+// app.use((req,res,next)=>{                        //normal use-middleware
+//     const username = req.headers.username;
+//     const password = req.headers.password;
+//     if(username!="abhishek" || password!="pass"){
+//         res.status(401).json({
+//             msg : "user not found"
+//         })
+//     }else{
+//         console.log("first middleware")
+//         next();
+//     }
+      
+// });
+// app.use((req,res,next)=>{
+//     console.log("second middleware");
+//     next();
+// })
+                       
+// app.get("/check-health",(req,res)=>{
+//     res.send("health is good");
+// });
+// app.listen(port,()=>{
+//     console.log("express is working");
 // });
 
-// app.listen(port, () => {
-//   console.log("express is working");
-// });
 
-// const http = require("http");
-
-// const server = http.createServer((req, res) => {
-
-//   if (req.method === "POST" && req.url === "/check-health") {
-
-//     let rawData = "";
-
-//     req.on("data", (chunk) => {
-//         console.log(chunk)
-//           console.log(chunk.toString());  
-//       rawData += chunk;
-//     });
-
-//     req.on("end", () => {
-
-//       console.log("RAW BODY (server console):", rawData);
-
-//       // Response jo Postman me dikhega
-//       res.writeHead(200, { "Content-Type": "text/plain" });
-//       res.end("Server received your data: " + rawData);
-//     });
-
-//   } else {
-//     res.writeHead(404, { "Content-Type": "text/plain" });
-//     res.end("Route not found");
-//   }
-
-// });
-
-// server.listen(3000, () => {
-//   console.log("Node.js server running on port 3000");
-// });
 
