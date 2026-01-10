@@ -1,0 +1,16 @@
+.container{
+    width: 600px;
+    height: 400px;
+    background-color: bisque;
+
+    display: grid;
+    /* grid-template-columns: repeat(3, 2fr); */
+    grid-template-rows: repeat(3, 4fr);
+}
+.itmes{
+    width: 100px;
+    height: 60px;
+    background-color: rgb(144, 72, 6);
+    border: 1px solid black;
+    text-align: center;;
+}
