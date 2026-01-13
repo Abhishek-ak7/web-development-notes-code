@@ -2,7 +2,7 @@
 
 
 
-//1>authentication 
+//1>authentication (basic)
 // const express = require('express');
 // const bodyparser=require('body-parser');
 // const app = express();
@@ -91,14 +91,14 @@
 const express = require('express');
 const port=3000;
 const bodyParser=require('body-parser');
-const { z } = require("zod");
+const { z } = require("zod"); //require 
 
 
 const app=express();
 
 app.use(bodyParser.json());
 
-function inputValidate(body){
+function inputValidate(body){    //make function where we built a input schema to check or validate our input
    const userSchema = z.object({
    kidneys: z.array(z.number()).max(2)
    });
@@ -108,7 +108,7 @@ function inputValidate(body){
 }
 
 app.post('/check-health',(req,res)=>{
-  const checkInput=inputValidate(req.body);
+  const checkInput=inputValidate(req.body);   //call to check valid input or not
   if(!checkInput.success){
     res.status(401).json({
         msg : "input is not valide"
