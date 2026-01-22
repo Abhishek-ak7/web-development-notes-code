@@ -4,8 +4,11 @@ const port=3000;
 
 mongoose.connect("mongodb+srv://abhishek_ak71:MSdhoni7Srk@cluster0.7tkfdmr.mongodb.net/newuser")
 
-const User=mongoose.model('user',{username: String, name: String, password: String});
-
+const User=mongoose.model('user',{
+    username: String,
+     name: String, 
+     password: String
+    });
 const app=express();
 
 app.use(express.json());
