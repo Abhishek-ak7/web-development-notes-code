@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple interest</title>
+</head>
+
+<body>
+    <input id="P" type="number" placeholder="Enter principal amount"><br>
+    <input id="R" type="number" placeholder="Annual rate of interest"><br>
+    <input id="T" type="number" placeholder="time, in years"><br>
+    <br>
+    <button onclick="calculateSI()">calculate</button>
+
+    <p id="SI"></p>
+
+    <script>
+
+        async function calculateSI() {
+            let P = document.getElementById('P').value;
+            let R = document.getElementById('R').value;
+            let T = document.getElementById('T').value;
+
+            const response =await fetch("http://localhost:3000/SI", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    P: P,
+                    R: R,
+                    T: T
+                }),
+            });
+        const data= await response.json();
+        document.getElementById('SI').innerText=data.SI;
+        }
+    </script>
+</body>
+
+</html>

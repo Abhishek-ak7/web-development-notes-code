@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>calculater</title>
+</head>
+
+<body>
+    <span>
+        <input id="num1" type="number" placeholder="first number"><br>
+        <input id="num2" type="number" placeholder="second number"><br>
+        <button onclick="addNumber()">add number</button>
+        <p id="sum"></p>
+    </span>
+    <script>
+        async function addNumber() {
+            let num1 = document.getElementById('num1').value;
+            let num2 = document.getElementById('num2').value;
+            const response = await fetch("http://localhost:3000/add", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    value1: num1,
+                    value2: num2
+                }),
+
+            });
+            const data = await response.json()  
+                        console.log(data);
+            document.getElementById('sum').innerHTML = data.sum;
+
+        }
+
+    </script>
+
+</body>
+
+</html>
