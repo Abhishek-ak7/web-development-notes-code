@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TO do list</title>
+</head>
+<body>
+        <input id="task" type="text" placeholder="add task"><br>
+        <input id="discription" type="text" placeholder="add discription"><br>
+        <button onclick="addTask()">add todo</button>
+
+        <ul id="display">
+
+        </ul>
+    </body>
+    <script>
+        async function addTask() {
+            let task=document.getElementById('task').value;
+            let discription=document.getElementById('discription').value;
+            const response=await fetch("http://localhost:3000/addTask",{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    task: task,
+                    discription: discription
+                })
+            });
+
+            const data= await response.json();
+            // console.log(data);
+            
+            var container = document.getElementById('display');
+            var taskDis=document.createElement('li').innerText=data.task;
+            var disDis=document.createElement('li').innerText=data.discription;
+            var btn = document.createElement('button');
+              btn.addEventListener("click", function(){
+                        btn.innerText="done"
+            });
+                        btn.innerText="click"
+
+            container.append(taskDis);
+            container.append(document.createElement('br'))
+            container.append(disDis);
+             container.append(document.createElement('br'))
+            container.append(btn);  
+            container.append(document.createElement('br'))            
+        }
+    </script>
+</body>
+</html>
